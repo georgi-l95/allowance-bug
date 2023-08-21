@@ -1,23 +1,17 @@
 import { expect } from "chai";
-import dotenv from "dotenv";
 import {
-  AccountCreateTransaction,
   AccountId,
-  AccountInfoQuery,
   Client,
-  Hbar,
   LocalProvider,
   PrivateKey,
   TokenAssociateTransaction,
   TokenCreateTransaction,
   TokenId,
-  TransferTransaction,
   Wallet as SDKWallet,
 } from "@hashgraph/sdk";
 import ERC20MockJson from "./ERC20Mock.json";
-import { Contract, JsonRpcApiProvider, JsonRpcProvider, Wallet } from "ethers";
+import { Contract, Wallet } from "ethers";
 import { ethers } from "hardhat";
-dotenv.config();
 
 describe("Allowance", async function () {
   async function createHTSToken(wallet: SDKWallet) {
@@ -70,13 +64,8 @@ describe("Allowance", async function () {
   }
 
   function initClient() {
-    let client;
-    const network = process.env.HEDERA_NETWORK || "{}";
-    if (process.env.SUPPORTED_ENV!.includes(network.toLowerCase())) {
-      client = Client.forName(network);
-    } else {
-      client = Client.forNetwork(JSON.parse(network));
-    }
+    const network = { "127.0.0.1:50211": "0.0.3" };
+    const client = Client.forNetwork(network);
     return client;
   }
 
